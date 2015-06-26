@@ -1,4 +1,9 @@
  #!/bin/bash
+#Version 0.3.4 / 26.06.2015
+#Cachetypen wählbar
+#Schwierigkeits- und Geländewertung beschränken
+#bestehende Config-Dateien funktionieren nicht mehr
+#
 #Version 0.3.3 / 07.06.2015
 #Radius nun auch als Gleitkommazahl möglich
 #
@@ -50,6 +55,9 @@ echo "ocUser=\"User\""
 echo "Radius=2"
 echo "Start=\"Stuttgart\""
 echo "Ziel=\"München\""
+echo "Arten=\"Traditional|Multi\""
+echo "Difficulty=\"1-5\""
+echo "Terrain=\"1-5\""
 echo "sender=\"absender@gmail.com\""
 echo "receiver=\"absender@gmail.com\""
 echo "tls=\"tls=yes\""
@@ -85,6 +93,9 @@ echo "[U]ser: " $ocUser
 echo "[R]adius: " $Radius
 echo "[S]tart: " $Start
 echo "[Z]iel: " $Ziel
+echo "[A]rten: " $Arten
+echo "[D]ifficulty: " $Difficulty
+echo "[T]errain: " $Terrain
 echo "[B]etreffzeile: " $subject
 echo "[M]ail Text: " $body
 echo "Für den Emailversand werden die in oc_car.conf hinterlegten Parameter genutzt."
@@ -114,6 +125,21 @@ z*|Z*) echo "Bitte neues Ziel eingeben:" ; read Ziel ;
 grep -v Ziel oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
 echo "Ziel=$Ziel" >> oc_car.conf;;
+a*|A*) echo "Bitte die gewünschten Cachetypen durch Kommas getrennt eingeben:" ; read Arten ;
+Arten=$(echo "$Arten" | sed -e 's/,/|/g' -e 's/ //g' )
+grep -v Arten oc_car.conf > tempdatei;
+mv tempdatei oc_car.conf;
+echo "Arten=$Arten" >> oc_car.conf;;
+d*|D*) echo "Bitte neuen Schwierigkeitsbereich (nur Ganzzahlen) eingeben:" ; read Difficulty ;
+Difficulty=$(echo "$Difficulty" | sed -e 's/ //g' )
+grep -v Difficulty oc_car.conf > tempdatei;
+mv tempdatei oc_car.conf;
+echo "Difficulty=$Difficulty" >> oc_car.conf;;
+t*|T*) echo "Bitte neuen Geländebereich (nur Ganzzahlen) eingeben:" ; read Terrain ;
+Terrain=$(echo "$Terrain" | sed -e 's/ //g' )
+grep -v Terrain oc_car.conf > tempdatei;
+mv tempdatei oc_car.conf;
+echo "Terrain=$Terrain" >> oc_car.conf;;
 b*|B*) echo "Bitte neuen Emailbetreff eingeben:" ; read subject ;
 grep -v subject oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
@@ -267,7 +293,7 @@ prozent=0
 
 #Hier finden die einzelnen Abfragen statt, der Consumer_key kann bei http://www.opencaching.de/okapi/signup.html besorgt werden
 for index in "${!array[@]}"; do
-var1=$(curl "http://www.opencaching.de/okapi/services/caches/search/nearest?center=${array[index]}&radius=${circle}&consumer_key=8YV657YqzqDcVC3QC9wM" -s)
+var1=$(curl "http://www.opencaching.de/okapi/services/caches/search/nearest?center=${array[index]}&radius=${circle}&type=${Arten}&difficulty=${Difficulty}&terrain=${Terrain}&consumer_key=8YV657YqzqDcVC3QC9wM" -s)
 #Wenn weniger als 30 Zeichen zurückkommen, war in diesem Bereich keine Dose versteckt
 if [ ${#var1} -lt 30 ]; then
 var1=""
