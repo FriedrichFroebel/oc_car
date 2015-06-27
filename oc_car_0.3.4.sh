@@ -106,7 +106,7 @@ else
 echo "Es wurde keine gültige gpx-Datei übergeben. Es wird eine neue Route berechnet."
 fi
 echo ""
-echo "Sollen Parameter geändert werden? [N]ein, [E]nde -> [U,R,S,Z,B,M,N,E]"
+echo "Sollen Parameter geändert werden? [N]ein, [E]nde -> [U,R,S,Z,A,D,T,B,M,N,E]"
 read answer
 case $answer in
 u*|U*) echo "Bitte neuen User eingeben:" ; read ocUser ;
@@ -125,17 +125,17 @@ z*|Z*) echo "Bitte neues Ziel eingeben:" ; read Ziel ;
 grep -v Ziel oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
 echo "Ziel=$Ziel" >> oc_car.conf;;
-a*|A*) echo "Bitte die gewünschten Cachetypen durch Kommas getrennt eingeben:" ; read Arten ;
+a*|A*) echo "Bitte die gewünschten Cachetypen durch Kommas getrennt eingeben (möglich: Traditional, Multi, Quiz, Virtual, Event, Webcam, Moving, Math/Physics, Drive-In, Other):" ; read Arten ;
 Arten=$(echo "$Arten" | sed -e 's/,/|/g' -e 's/ //g' )
 grep -v Arten oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
-echo "Arten=$Arten" >> oc_car.conf;;
-d*|D*) echo "Bitte neuen Schwierigkeitsbereich (nur Ganzzahlen) eingeben:" ; read Difficulty ;
+echo "Arten=\"$Arten\"" >> oc_car.conf;;
+d*|D*) echo "Bitte neuen Schwierigkeitsbereich (nur Ganzzahlen von 1 bis 5, z. B. 1-3) eingeben:" ; read Difficulty ;
 Difficulty=$(echo "$Difficulty" | sed -e 's/ //g' )
 grep -v Difficulty oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
 echo "Difficulty=$Difficulty" >> oc_car.conf;;
-t*|T*) echo "Bitte neuen Geländebereich (nur Ganzzahlen) eingeben:" ; read Terrain ;
+t*|T*) echo "Bitte neuen Geländebereich (nur Ganzzahlen von 1 bis 5, z. B. 1-3) eingeben:" ; read Terrain ;
 Terrain=$(echo "$Terrain" | sed -e 's/ //g' )
 grep -v Terrain oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
@@ -205,11 +205,11 @@ if [ $(echo " $Radius > 0" | bc) -eq 1 ]; then
 if [ $(echo " $Radius < 11" | bc) -eq 1 ]; then
 echo "Radius ist ok"
 else
-echo "Radius muss zwischen 0.1 und 10 liegen! Bitte Parameter prüfen"
+echo "Radius muss zwischen 0.1 und 11 liegen! Bitte Parameter prüfen"
 exit
 fi
 else
-echo "Radius muss zwischen 0.1 und 10 liegen! Bitte Parameter prüfen"
+echo "Radius muss zwischen 0.1 und 11 liegen! Bitte Parameter prüfen"
 exit
 fi
 
