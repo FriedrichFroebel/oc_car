@@ -293,7 +293,7 @@ prozent=0
 
 #Hier finden die einzelnen Abfragen statt, der Consumer_key kann bei http://www.opencaching.de/okapi/signup.html besorgt werden
 for index in "${!array[@]}"; do
-var1=$(curl "http://www.opencaching.de/okapi/services/caches/search/nearest?center=${array[index]}&radius=${circle}&type=${Arten}&difficulty=${Difficulty}&terrain=${Terrain}&consumer_key=8YV657YqzqDcVC3QC9wM" -s)
+var1=$(curl "http://www.opencaching.de/okapi/services/caches/search/nearest?center=${array[index]}&radius=${circle}&type=${Arten}&difficulty=${Difficulty}&terrain=${Terrain}&status=Available&consumer_key=8YV657YqzqDcVC3QC9wM" -s)
 #Wenn weniger als 30 Zeichen zurückkommen, war in diesem Bereich keine Dose versteckt
 if [ ${#var1} -lt 30 ]; then
 var1=""
