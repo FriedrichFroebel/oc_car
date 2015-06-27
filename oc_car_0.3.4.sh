@@ -3,6 +3,7 @@
 #Cachetypen wählbar
 #Schwierigkeits- und Geländewertung beschränken
 #bestehende Config-Dateien funktionieren nicht mehr
+#nur verfügbare Caches suchen
 #
 #Version 0.3.3 / 07.06.2015
 #Radius nun auch als Gleitkommazahl möglich
