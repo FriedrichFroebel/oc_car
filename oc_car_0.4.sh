@@ -1,4 +1,9 @@
  #!/bin/bash
+#Version 0.4 / 12.07.2015
+#Abruf der Koordinaten nun über nominatim.openstreetmap.org
+#Leerzeichen in Ortsnamen werden durch Plus ersetzt
+#JSON.sh für ordentliche Funktionsweise notwendig - https://github.com/dominictarr/JSON.sh/blob/master/JSON.sh
+#
 #Version 0.3.4 / 26.06.2015
 #Cachetypen wählbar
 #Schwierigkeits- und Geländewertung beschränken
