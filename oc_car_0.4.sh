@@ -124,10 +124,14 @@ grep -v Radius oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
 echo "Radius=$Radius" >> oc_car.conf;;
 s*|S*) echo "Bitte neuen Start eingeben:" ; read Start ;
+#Leerzeichen durch Plus ersetzen
+Start=$(echo "$Start" | sed -e 's/ /+/g')
 grep -v Start oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
 echo "Start=$Start" >> oc_car.conf;;
 z*|Z*) echo "Bitte neues Ziel eingeben:" ; read Ziel ;
+#Leerzeichen durch Plus ersetzen
+Ziel=$(echo "$Ziel" | sed -e 's/ /+/g')
 grep -v Ziel oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
 echo "Ziel=$Ziel" >> oc_car.conf;;
@@ -177,19 +181,27 @@ echo "Benutzer wurde gefunden."
 #Abruf der Route
 if [ $gpxok == "nein" ]; then
 
-#Die Geokoordinaten werden mit Hilfe von mapquest abgerufen
-Start_1=$(curl "http://www.mapquestapi.com/geocoding/v1/address?location=$Start&outFormat=xml&key=Fmjtd%7Cluur2l0tn5%2Cbw%3Do5-9a7g0r" -s)
-Ziel_1=$(curl "http://www.mapquestapi.com/geocoding/v1/address?location=$Ziel&outFormat=xml&key=Fmjtd%7Cluur2l0tn5%2Cbw%3Do5-9a7g0r" -s)
+#Koordinaten von Openstreetmap herunterladen
+curl -s -o Start.json "http://nominatim.openstreetmap.org/search?q=$Start&format=json"
+curl -s -o Ziel.json "http://nominatim.openstreetmap.org/search?q=$Ziel&format=json"
 
-#Zuerst Suche ich in der Variable eine Zeile mit <lat>, dann ersetze ich <lat> und </lat> durch "", dann lese ich diese Zeile bis zur 1. " "
-latS=$(awk '{print $1}' <<<$(echo "$Start_1" | grep '<lat>' | sed -e "s/<lat>//" -e "s/<\/lat>//"))
-lngS=$(awk '{print $1}' <<<$(echo "$Start_1" | grep '<lng>' | sed -e "s/<lng>//" -e "s/<\/lng>//"))
+#mit JSON.sh verarbeiten
+Start_1=$(JSON.sh < Start.json)
+Ziel_1=$(JSON.sh < Ziel.json)
+
+#Zuerst suche ich in der Variable eine Zeile mit [0,"lat"] bzw. [0,"lon"], dann entferne ich dies zusammen mit den Anführungszeichen um den Koordinatenwert
+latS=$(awk '{print $1}' <<<$(echo "$Start_1" | grep '\[0,"lat"\]' | sed -e 's/\[0,"lat"\]//' -e 's/"//g'))
+lngS=$(awk '{print $1}' <<<$(echo "$Start_1" | grep '\[0,"lon"\]' | sed -e 's/\[0,"lon"\]//' -e 's/"//g'))
 echo lng:$lngS
 echo lat:$latS
-latZ=$(awk '{print $1}' <<<$(echo "$Ziel_1" | grep '<lat>' | sed -e "s/<lat>//" -e "s/<\/lat>//"))
-lngZ=$(awk '{print $1}' <<<$(echo "$Ziel_1" | grep '<lng>' | sed -e "s/<lng>//" -e "s/<\/lng>//"))
+latZ=$(awk '{print $1}' <<<$(echo "$Ziel_1" | grep '\[0,"lat"\]' | sed -e 's/\[0,"lat"\]//' -e 's/"//g'))
+lngZ=$(awk '{print $1}' <<<$(echo "$Ziel_1" | grep '\[0,"lon"\]' | sed -e 's/\[0,"lon"\]//' -e 's/"//g'))
 echo lng:$lngZ
 echo lat:$latZ
+
+#heruntergeladene Dateien entfernen
+rm Start.json
+rm Ziel.json
 
 #Die Route wird über project-osrm abgerufen und in die Datei route.gpx gespeichert
 #curl "http://router.project-osrm.org/viaroute?loc=$latS,$lngS&loc=$latZ,$lngZ&output=gpx&alt=false" -s > ./route.gpx
