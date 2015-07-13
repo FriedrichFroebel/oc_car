@@ -1,4 +1,4 @@
- #!/bin/bash
+﻿ #!/bin/bash
 #Version 0.4 / 12.07.2015
 #Abruf der Koordinaten nun über nominatim.openstreetmap.org
 #Leerzeichen in Ortsnamen werden durch Plus ersetzt
@@ -186,8 +186,8 @@ curl -s -o Start.json "http://nominatim.openstreetmap.org/search?q=$Start&format
 curl -s -o Ziel.json "http://nominatim.openstreetmap.org/search?q=$Ziel&format=json"
 
 #mit JSON.sh verarbeiten
-Start_1=$(JSON.sh < Start.json)
-Ziel_1=$(JSON.sh < Ziel.json)
+Start_1=$(./JSON.sh < Start.json)
+Ziel_1=$(./JSON.sh < Ziel.json)
 
 #Zuerst suche ich in der Variable eine Zeile mit [0,"lat"] bzw. [0,"lon"], dann entferne ich dies zusammen mit den Anführungszeichen um den Koordinatenwert
 latS=$(awk '{print $1}' <<<$(echo "$Start_1" | grep '\[0,"lat"\]' | sed -e 's/\[0,"lat"\]//' -e 's/"//g'))
