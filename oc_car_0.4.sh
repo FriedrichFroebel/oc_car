@@ -61,7 +61,7 @@ echo "ocUser=\"User\""
 echo "Radius=2"
 echo "Start=\"Stuttgart\""
 echo "Ziel=\"München\""
-echo "Arten=\"Traditional|Multi\""
+echo "Arten=\"alle\""
 echo "Difficulty=\"1-5\""
 echo "Terrain=\"1-5\""
 echo "sender=\"absender@gmail.com\""
@@ -135,7 +135,7 @@ Ziel=$(echo "$Ziel" | sed -e 's/ /+/g')
 grep -v Ziel oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
 echo "Ziel=$Ziel" >> oc_car.conf;;
-a*|A*) echo "Bitte die gewünschten Cachetypen durch Kommas getrennt eingeben (möglich: Traditional, Multi, Quiz, Virtual, Event, Webcam, Moving, Math/Physics, Drive-In, Other):" ; read Arten ;
+a*|A*) echo "Bitte die gewünschten Cachetypen durch Kommas getrennt eingeben (möglich: alle, Traditional, Multi, Quiz, Virtual, Event, Webcam, Moving, Math/Physics, Drive-In, Other):" ; read Arten ;
 Arten=$(echo "$Arten" | sed -e 's/,/|/g' -e 's/ //g' )
 grep -v Arten oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
@@ -310,8 +310,14 @@ echo
 prozent=0
 
 #Hier finden die einzelnen Abfragen statt, der Consumer_key kann bei http://www.opencaching.de/okapi/signup.html besorgt werden
+ArtenGross=$(echo "$Arten" | tr [:lower] [:upper:]) #in Großbuchstaben umwandeln
 for index in "${!array[@]}"; do
-var1=$(curl "http://www.opencaching.de/okapi/services/caches/search/nearest?center=${array[index]}&radius=${circle}&type=${Arten}&difficulty=${Difficulty}&terrain=${Terrain}&status=Available&consumer_key=8YV657YqzqDcVC3QC9wM" -s)
+if [ "$ArtenGross" == "ALLE" ]
+then
+  var1=$(curl "http://www.opencaching.de/okapi/services/caches/search/nearest?center=${array[index]}&radius=${circle}&difficulty=${Difficulty}&terrain=${Terrain}&status=Available&consumer_key=8YV657YqzqDcVC3QC9wM" -s)
+else
+  var1=$(curl "http://www.opencaching.de/okapi/services/caches/search/nearest?center=${array[index]}&radius=${circle}&type=${Arten}&difficulty=${Difficulty}&terrain=${Terrain}&status=Available&consumer_key=8YV657YqzqDcVC3QC9wM" -s)
+fi
 #Wenn weniger als 30 Zeichen zurückkommen, war in diesem Bereich keine Dose versteckt
 if [ ${#var1} -lt 30 ]; then
 var1=""
