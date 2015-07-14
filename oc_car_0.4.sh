@@ -310,7 +310,7 @@ echo
 prozent=0
 
 #Hier finden die einzelnen Abfragen statt, der Consumer_key kann bei http://www.opencaching.de/okapi/signup.html besorgt werden
-ArtenGross=$(echo "$Arten" | tr [:lower] [:upper:]) #in Großbuchstaben umwandeln
+ArtenGross=$(echo "$Arten" | tr [:lower:] [:upper:]) #in Großbuchstaben umwandeln
 for index in "${!array[@]}"; do
 if [ "$ArtenGross" == "ALLE" ]
 then
