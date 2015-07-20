@@ -220,14 +220,14 @@ fi
 
 #Überprüfen des Radius
 if [ $(echo " $Radius > 0" | bc) -eq 1 ]; then
-if [ $(echo " $Radius < 11" | bc) -eq 1 ]; then
+if [ $(echo " $Radius < 10.1" | bc) -eq 1 ]; then
 echo "Radius ist ok"
 else
-echo "Radius muss zwischen 0.1 und 11 liegen! Bitte Parameter prüfen."
+echo "Radius muss zwischen 0 und 10.1 liegen! Bitte Parameter prüfen."
 exit
 fi
 else
-echo "Radius muss zwischen 0.1 und 11 liegen! Bitte Parameter prüfen."
+echo "Radius muss zwischen 0 und 10.1 liegen! Bitte Parameter prüfen."
 exit
 fi
 
