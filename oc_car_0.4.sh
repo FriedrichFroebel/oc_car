@@ -1,4 +1,4 @@
-﻿ #!/bin/bash
+#!/bin/bash
 #Version 0.4 / 12.07.2015
 #Abruf der Koordinaten nun über nominatim.openstreetmap.org
 #Leerzeichen in Ortsnamen werden durch Plus ersetzt
@@ -15,12 +15,12 @@
 #
 #Version 0.3.2 / 26.10.2014
 #neuer Service zur Routenerstellung
-#wegen Problemen mit vorigem Anieter
+#wegen Problemen mit vorherigem Anbieter
 #
 #Version 0.3.1 / 30.03.2014
-#Mailtext im Menü änderbar
+#E-Mail-Text im Menü änderbar
 #keine Größenbeschränkung mehr
-# je 500 Listings wird eine Mail geschickt.
+# je 500 Listings wird eine E-Mail geschickt.
 #
 #Version 0.3 / 29.03.2014
 #Das Script kann jetzt selbst Routen erzeugen. Es muss keine GPX-Datei mehr übergeben werden.
@@ -33,9 +33,9 @@
 # der Route angegeben werden. Diese Route wird abgerufen,
 # wenn keine Route beim Scriptstart übergeben wurde.
 # -Bei Änderung von Parametern werden diese in der .conf-Datei gespeichert.
-#
 #Bekannter Fehler
 # Bei Anzahl Listings > 500 klappt das (noch) nicht :-(
+#
 #Version 0.2 / 27.03.2014
 #Abfrage, ob User gefunden werden konnte, eingebunden
 #Abfrage, ob gültige GPX-Datei vorliegt
@@ -150,7 +150,7 @@ Terrain=$(echo "$Terrain" | sed -e 's/ //g' )
 grep -v Terrain oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
 echo "Terrain=$Terrain" >> oc_car.conf;;
-b*|B*) echo "Bitte neuen Emailbetreff eingeben:" ; read subject ;
+b*|B*) echo "Bitte neuen E-Mail-Betreff eingeben:" ; read subject ;
 grep -v subject oc_car.conf > tempdatei;
 mv tempdatei oc_car.conf;
 echo "subject=\"$subject\"" >> oc_car.conf;;
@@ -160,13 +160,13 @@ mv tempdatei oc_car.conf;
 echo "body=\"$body\"" >> oc_car.conf;;
 n*|N*) echo "" ; break ;;
 e*|E*) clear ; exit ;;
-*) echo das war wohl nichts ;;
+*) echo Das war wohl nichts ;;
 esac
 done
 
-#Bildschirm löschen
+#Bildschirminhalt löschen
 clear
-echo "Opencaching.de-Caches auf Route"
+echo "Opencaching.de - Caches auf Route"
 
 #UserID ermitteln
 UUID=$(curl "http://www.opencaching.de/okapi/services/users/by_username?username=$ocUser&fields=uuid&consumer_key=8YV657YqzqDcVC3QC9wM" -s)
@@ -189,7 +189,7 @@ curl -s -o Ziel.json "http://nominatim.openstreetmap.org/search?q=$Ziel&format=j
 Start_1=$(./JSON.sh < Start.json)
 Ziel_1=$(./JSON.sh < Ziel.json)
 
-#Zuerst suche ich in der Variable eine Zeile mit [0,"lat"] bzw. [0,"lon"], dann entferne ich dies zusammen mit den Anführungszeichen um den Koordinatenwert
+#Zuerst suche ich in der Variable eine Zeile mit [0,"lat"] bzw. [0,"lon"], dann entferne ich dies zusammen mit den Anführungszeichen, um den Koordinatenwert zu erhalten
 latS=$(awk '{print $1}' <<<$(echo "$Start_1" | grep '\[0,"lat"\]' | sed -e 's/\[0,"lat"\]//' -e 's/"//g'))
 lngS=$(awk '{print $1}' <<<$(echo "$Start_1" | grep '\[0,"lon"\]' | sed -e 's/\[0,"lon"\]//' -e 's/"//g'))
 echo lng:$lngS
@@ -203,11 +203,11 @@ echo lat:$latZ
 rm Start.json
 rm Ziel.json
 
-#Die Route wird über project-osrm abgerufen und in die Datei route.gpx gespeichert
+#Die Route wird über YourNavigation abgerufen und in die Datei route.kml gespeichert
 #curl "http://router.project-osrm.org/viaroute?loc=$latS,$lngS&loc=$latZ,$lngZ&output=gpx&alt=false" -s > ./route.gpx
 curl "http://www.yournavigation.org/api/1.0/gosmore.php?flat=$latS&flon=$lngS&tlat=$latZ&tlon=$lngZ&v=motorcar&fast=1" -s > ./route.kml
 
-#Überprüfen der GPX-Datei
+#Überprüfen der GPX-Datei (konvertierte KML-Datei)
 gpsbabel -i kml -f route.kml -o gpx -F route.gpx
 if gpsbabel -i gpx -f route.gpx -o gpx -F - > /dev/null; then
 echo "GPX-Datei ist gültig"
@@ -295,7 +295,7 @@ b="$(echo "$searchargs" | sed 's/'\|'/'a'/g')"
 c="$(echo "$b" | sed 's/'\,'/'\|'/g')"
 d="$(echo "$c" | sed 's/'a'/'\,'/g')"
 
-#Hier werden aus dem String die einzelnen Koordiantenpaare in ein Array geschrieben
+#Hier werden aus dem String die einzelnen Koordinatenpaare in ein Array geschrieben
 IFS=',' read -a array <<< "$d"
 
 for index in "${!array[@]}"; do
