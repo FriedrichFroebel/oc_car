@@ -1,3 +1,9 @@
+# Version 0.5 - 2020-04-26
+
+* Übersichtlichere Formatierung des Skripts.
+* Umstellung auf HTTPS, insofern die Dienste dies unterstützen.
+* Kompatibilität für Windows (hinsichtlich Kodierungsproblemen) hergestellt - das Skript funktioniert mit den entsprechenden Pfaden in der `PATH`-Variable nun auch ohne weitere Anpassung direkt unter Windows (mittels Git Bash).
+
 # Version 0.4 - 2015-07-12
 
 * Abruf der Koordinaten nun über nominatim.openstreetmap.org.
