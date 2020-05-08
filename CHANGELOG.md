@@ -36,9 +36,9 @@
 * Das Script kann jetzt selbst Routen erzeugen. Es muss keine GPX-Datei mehr übergeben werden.
 * Änderung in der Parameterverwaltung
   * Als einziger Aufrufparameter bleibt der Dateiname einer Route (GPX), dieses ist aber optional.
-  * Radius, User und E-Mail-Daten werden in einer externen .conf-Datei verwaltet. Diese wird selbst erzeugt, wenn sie nicht vorhanden ist.
+  * Radius, User und E-Mail-Daten werden in einer externen `.conf`-Datei verwaltet. Diese wird selbst erzeugt, wenn sie nicht vorhanden ist.
   * In der Eingabemaske kann jetzt ein Start und ein Ziel der Route angegeben werden. Diese Route wird abgerufen, wenn keine Route beim Scriptstart übergeben wurde.
-  * Bei Änderung von Parametern werden diese in der .conf-Datei gespeichert.
+  * Bei Änderung von Parametern werden diese in der `.conf`-Datei gespeichert.
 * Bekannter Fehler: Bei Anzahl Listings > 500 klappt das (noch) nicht :-(
 
 # Version 0.2 - 2014-03-27
