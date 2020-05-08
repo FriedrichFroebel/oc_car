@@ -43,9 +43,9 @@
 
 # Version 0.2 - 2014-03-27
 
-* Abfrage, ob User gefunden werden konnte, eingebunden
-* Abfrage, ob gültige GPX-Datei vorliegt
-* Abfrage, ob Radius zwischen 0.1 und 10 liegt
+* Abfrage, ob User gefunden werden konnte, eingebunden.
+* Abfrage, ob gültige GPX-Datei vorliegt.
+* Abfrage, ob Radius zwischen 0.1 und 10 liegt.
 
 # Version 0.1 - 2014-03-26
 
