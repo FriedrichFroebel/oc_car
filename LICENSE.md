@@ -2,6 +2,7 @@
 The MIT License (MIT)
 
 Copyright (c) 2014 ka_be
+
 Copyright (c) 2015-2020 FriedrichFröbel
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
