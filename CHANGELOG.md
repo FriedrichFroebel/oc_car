@@ -1,3 +1,8 @@
+# Entwicklungsversion
+
+* Teilweise bessere Benennung der verwendeten Variablen sowie zusätzliches Maskieren/Escapen von Variablen.
+* Keine temporäre Speicherung der JSON-Dateien für Start- und Zielpunkt mehr notwendig.
+
 # Version 0.5 - 2020-04-26
 
 * Übersichtlichere Formatierung des Skripts.
