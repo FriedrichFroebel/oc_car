@@ -25,7 +25,7 @@ else {
     echo "ocUser=\"User\""
     echo "Radius=2"
     echo "Start=\"Stuttgart\""
-    if [ "$is_windows" = true ]; then
+    if [ "${isWindows}" = true ]; then
         echo "Ziel=\"Muenchen\""
     else
         echo "Ziel=\"München\""
@@ -361,6 +361,12 @@ echo "${zahl}"
 # Anzahl Abrufe zu je 500 bestimmen.
 loop=$(($zahl / 500))
 
+# Prüfen, ob `sendemail` verfügbar ist.
+hasSendemail=false
+if [ -z "$(which sendemail)" ]; then
+    hasSendemail=true
+fi
+
 for (( c=0; c<=$loop; c++ )); do
     # `spalte` entspricht dem Startindex der aktuellen Iteration.
     spalte=$[($c * 500) + 1]
@@ -378,7 +384,9 @@ for (( c=0; c<=$loop; c++ )); do
     echo "Die Datei ${output} wird hier im Verzeichnis abgelegt und per E-Mail versendet."
 
     # Per E-Mail versenden.
-    sendemail -f $sender -t $receiver -o $tls -s $smtp -xu $mailuser -xp $mailpassword -u $"${subject} GPX$[($c + 1)] von $[(${loop} + 1)]" -m ${body} -a ${output}
+    if [ "${hasSendemail}" = true ]; then
+        sendemail -f $sender -t $receiver -o $tls -s $smtp -xu $mailuser -xp $mailpassword -u $"${subject} GPX$[($c + 1)] von $[(${loop} + 1)]" -m ${body} -a ${output}
+    fi
 done
 
 exit
